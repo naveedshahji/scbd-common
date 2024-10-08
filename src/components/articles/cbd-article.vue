@@ -33,7 +33,9 @@
 
 <script>
 
-import axios from 'axios';
+// import axios from 'axios';
+import ky from 'ky';
+
 import ArticlesApi from '../../services/api/articles';
 import {lstring } from '../../services/filters/lstring'
 import cbdAddNewArticle from './cbd-add-new-article.vue';
@@ -64,19 +66,28 @@ export default {
         }
     },
     created() {
-       this.ArticlesApi = new ArticlesApi();
+       this.articlesApi = new ArticlesApi();
     },
     mounted() {
-        if(!this.article && this.query)
+
+    // if(!this.article && this.query)
             this.loadArticle();
     },
     methods: {
         async loadArticle() {
             try{
+                console.log("this.ArticlesApi", this.articlesApi)  
+                const articleResult = await this.articlesApi.getArticleById("619c556b4f1f30000140ef06");
+                console.log("articleResult articleResult articles data", articleResult);
+                // const axiosResponse = await axios.get('https://api.cbddev.xyz/api/v2017/articles?ag=[%7B%22$match%22:%7B%22_id%22:%7B%22$in%22:[%7B%22$oid%22:%22619c553658029700017ff43b%22%7D,%7B%22$oid%22:%22619c55594f1f30000140eeec%22%7D,%7B%22$oid%22:%22619c553c0c1ff000011c1c22%22%7D,%7B%22$oid%22:%22619c553e0c1ff000011c1c24%22%7D,%7B%22$oid%22:%22619c553f4f1f30000140eeba%22%7D,%7B%22$oid%22:%22619c554e58029700017ff467%22%7D,%7B%22$oid%22:%22619c554258029700017ff447%22%7D,%7B%22$oid%22:%22619c555c58029700017ff475%22%7D,%7B%22$oid%22:%22619c553d58029700017ff445%22%7D,%7B%22$oid%22:%22619c555d4f1f30000140eef4%22%7D,%7B%22$oid%22:%22619c55374f1f30000140eeae%22%7D,%7B%22$oid%22:%22619c554558029700017ff44d%22%7D,%7B%22$oid%22:%22619c55464f1f30000140eec8%22%7D,%7B%22$oid%22:%22619c55384f1f30000140eeb0%22%7D,%7B%22$oid%22:%22619c554858029700017ff45f%22%7D,%7B%22$oid%22:%22619c554d4f1f30000140eed6%22%7D,%7B%22$oid%22:%22619c554e58029700017ff465%22%7D,%7B%22$oid%22:%22619c554f4f1f30000140eeda%22%7D,%7B%22$oid%22:%22619c553a4f1f30000140eeb2%22%7D,%7B%22$oid%22:%22619c555058029700017ff46b%22%7D,%7B%22$oid%22:%22619c556b4f1f30000140ef06%22%7D,%7B%22$oid%22:%22619c555258029700017ff46d%22%7D,%7B%22$oid%22:%22619c55534f1f30000140eee0%22%7D,%7B%22$oid%22:%22619c55440c1ff000011c1c2e%22%7D,%7B%22$oid%22:%22619c55390c1ff000011c1c20%22%7D,%7B%22$oid%22:%22619c55550c1ff000011c1c44%22%7D,%7B%22$oid%22:%22619c55564f1f30000140eee6%22%7D,%7B%22$oid%22:%22619c55400c1ff000011c1c28%22%7D,%7B%22$oid%22:%22619c53c148780824013af838%22%7D,%7B%22$oid%22:%22619c55410c1ff000011c1c2a%22%7D,%7B%22$oid%22:%22619c553958029700017ff43d%22%7D,%7B%22$oid%22:%22619c55640c1ff000011c1c4e%22%7D,%7B%22$oid%22:%22619c553a58029700017ff441%22%7D,%7B%22$oid%22:%22619c55564f1f30000140eee8%22%7D,%7B%22$oid%22:%22619c55574f1f30000140eeea%22%7D,%7B%22$oid%22:%22619c555758029700017ff471%22%7D,%7B%22$oid%22:%22619c55580c1ff000011c1c46%22%7D,%7B%22$oid%22:%22619c553f4f1f30000140eeba%22%7D,%7B%22$oid%22:%22619c554758029700017ff45d%22%7D,%7B%22$oid%22:%22619c55474f1f30000140eeca%22%7D,%7B%22$oid%22:%22619c554858029700017ff45f%22%7D,%7B%22$oid%22:%22619c554a0c1ff000011c1c40%22%7D,%7B%22$oid%22:%22619c554b4f1f30000140eed2%22%7D,%7B%22$oid%22:%22619c554c4f1f30000140eed4%22%7D,%7B%22$oid%22:%22619c553a4f1f30000140eeb2%22%7D,%7B%22$oid%22:%22619c553c58029700017ff443%22%7D,%7B%22$oid%22:%22619c55430c1ff000011c1c2c%22%7D]%7D%7D%7D,%7B%22$project%22:%7B%22title%22:1,%22summary%22:1%7D%7D,%7B%22$limit%22:47%7D]');                    
+                // console.log("axiosResponse", axiosResponse) 
+                
+                // const kyResponse = await ky.get('https://api.cbddev.xyz/api/v2017/articles?ag=[%7B%22$match%22:%7B%22_id%22:%7B%22$in%22:[%7B%22$oid%22:%22619c553658029700017ff43b%22%7D,%7B%22$oid%22:%22619c55594f1f30000140eeec%22%7D,%7B%22$oid%22:%22619c553c0c1ff000011c1c22%22%7D,%7B%22$oid%22:%22619c553e0c1ff000011c1c24%22%7D,%7B%22$oid%22:%22619c553f4f1f30000140eeba%22%7D,%7B%22$oid%22:%22619c554e58029700017ff467%22%7D,%7B%22$oid%22:%22619c554258029700017ff447%22%7D,%7B%22$oid%22:%22619c555c58029700017ff475%22%7D,%7B%22$oid%22:%22619c553d58029700017ff445%22%7D,%7B%22$oid%22:%22619c555d4f1f30000140eef4%22%7D,%7B%22$oid%22:%22619c55374f1f30000140eeae%22%7D,%7B%22$oid%22:%22619c554558029700017ff44d%22%7D,%7B%22$oid%22:%22619c55464f1f30000140eec8%22%7D,%7B%22$oid%22:%22619c55384f1f30000140eeb0%22%7D,%7B%22$oid%22:%22619c554858029700017ff45f%22%7D,%7B%22$oid%22:%22619c554d4f1f30000140eed6%22%7D,%7B%22$oid%22:%22619c554e58029700017ff465%22%7D,%7B%22$oid%22:%22619c554f4f1f30000140eeda%22%7D,%7B%22$oid%22:%22619c553a4f1f30000140eeb2%22%7D,%7B%22$oid%22:%22619c555058029700017ff46b%22%7D,%7B%22$oid%22:%22619c556b4f1f30000140ef06%22%7D,%7B%22$oid%22:%22619c555258029700017ff46d%22%7D,%7B%22$oid%22:%22619c55534f1f30000140eee0%22%7D,%7B%22$oid%22:%22619c55440c1ff000011c1c2e%22%7D,%7B%22$oid%22:%22619c55390c1ff000011c1c20%22%7D,%7B%22$oid%22:%22619c55550c1ff000011c1c44%22%7D,%7B%22$oid%22:%22619c55564f1f30000140eee6%22%7D,%7B%22$oid%22:%22619c55400c1ff000011c1c28%22%7D,%7B%22$oid%22:%22619c53c148780824013af838%22%7D,%7B%22$oid%22:%22619c55410c1ff000011c1c2a%22%7D,%7B%22$oid%22:%22619c553958029700017ff43d%22%7D,%7B%22$oid%22:%22619c55640c1ff000011c1c4e%22%7D,%7B%22$oid%22:%22619c553a58029700017ff441%22%7D,%7B%22$oid%22:%22619c55564f1f30000140eee8%22%7D,%7B%22$oid%22:%22619c55574f1f30000140eeea%22%7D,%7B%22$oid%22:%22619c555758029700017ff471%22%7D,%7B%22$oid%22:%22619c55580c1ff000011c1c46%22%7D,%7B%22$oid%22:%22619c553f4f1f30000140eeba%22%7D,%7B%22$oid%22:%22619c554758029700017ff45d%22%7D,%7B%22$oid%22:%22619c55474f1f30000140eeca%22%7D,%7B%22$oid%22:%22619c554858029700017ff45f%22%7D,%7B%22$oid%22:%22619c554a0c1ff000011c1c40%22%7D,%7B%22$oid%22:%22619c554b4f1f30000140eed2%22%7D,%7B%22$oid%22:%22619c554c4f1f30000140eed4%22%7D,%7B%22$oid%22:%22619c553a4f1f30000140eeb2%22%7D,%7B%22$oid%22:%22619c553c58029700017ff443%22%7D,%7B%22$oid%22:%22619c55430c1ff000011c1c2c%22%7D]%7D%7D%7D,%7B%22$project%22:%7B%22title%22:1,%22summary%22:1%7D%7D,%7B%22$limit%22:47%7D]').json();
+                // console.log("kyResponse", kyResponse);
+
                 this.loading = true;
-                const query = this.query;
-                const articleResult = await this.ArticlesApi.queryArticles(query)
-     
+                // const query = this.query;
+            
                 if(articleResult.length){
                     let lArticle = articleResult[0];
 
@@ -121,7 +132,7 @@ export default {
                         url : encodeURI(url),
                     }
 
-                    const response = await axios.get('/api/v2020/oembed', {params:params});                    
+                    const response = await ky.get('/api/v2020/oembed', {params:params});                    
                     var embedHtml = '<div class="ck-media__wrapper" style="width:100%">' + response.data.html +'</div>'
                     element.insertAdjacentHTML("afterend", embedHtml);
                     
