@@ -1,8 +1,8 @@
 <template>
   <div>
     <h3>CBD input components</h3>
- 
     <preview-component card-header="checkbox">
+     
             <template #left>
               <checkbox v-model="isChecked">
                   <template #label>
@@ -153,7 +153,7 @@
   </div>
 </template>
 
-<script setup> 
+<script setup lang="ts">
   import checkbox from "./checkbox.vue";
   import dateSelector from "./dateSelector.vue";
   import { ref , computed} from "vue";
@@ -165,55 +165,29 @@
   import { allPluginsConfig } from './ck-editor/all-plugins-config.js';
 
   //checkbox  
-  const isChecked = ref(false);
+ const isChecked = ref<boolean>(false);
 
+// DateSelector
+const dateValue = ref<string>('2024-02-06');
 
-  //dateSelector
-  const dateValue = ref("2024-02-06");
-  //for select-file-button example
-  let files = ref([]);
-  const receiveFile = (receiveFiles) => {
-      if (receiveFiles instanceof Array) {
-          files.value = receiveFiles;   
-      }
-      else{
-      if (receiveFiles instanceof Object){
-        
-          files.value=[receiveFiles];   
-      }   }      
-  };
-  
-   // radio
-   const radioValue1 = ref('true');
-   const radioValue2 = ref('true');
+// For select-file-button example
+let files = ref<Array<File | object>>([]);
 
+const receiveFile = (receiveFiles: any) => {
+  if (Array.isArray(receiveFiles)) {
+    files.value = receiveFiles;
+  } else if (typeof receiveFiles === 'object') {
+    files.value = [receiveFiles];
+  }
+};
 
-  // for km-ck-editor
-  const ckText= ref("");
+// Radio
+const radioValue1 = ref<string>('true');
+const radioValue2 = ref<string>('true');
 
+// For km-ck-editor
+const ckText = ref<string>('');
 
 </script>
 <style lang="scss" scoped></style>
-<!-- <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                
-            </div>
-            <div class="card-body"> 
-                <div class="row">
-                   <div class="col-6">
-                        
-                    </div>
-                    <div class="col-6">
-                        <div class="callout callout-warning">
-                            <code>                                    
-                                ///HTML Escape////
-                            </code>   
-                        </div>                                                            
-                    </div>
-                </div>
-            </div>               
-        </div>
-    </div>        
-</div> -->
+ 
